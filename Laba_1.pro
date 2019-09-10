@@ -1,0 +1,81 @@
+DOMAINS
+	s=symbol
+PREDICATES
+	nondeterm parent (s,s)
+	nondeterm man (s)
+	nondeterm father (s,s)
+	nondeterm grandparent (s,s)
+	nondeterm mother (s,s)
+	nondeterm woman (s)
+	nondeterm son (s,s)
+	nondeterm daughter(s,s)
+	nondeterm brother (s,s)
+	nondeterm sister (s,s)
+	nondeterm aunt (s,s)
+	nondeterm uncle (s,s)
+	nondeterm niece (s,s)
+CLAUSES
+	% Факты:
+	parent("Михаил Федорович", "Алексей Михайлович"). parent("Евдокия Стрешнева", "Алексей Михайлович").
+	parent("Наталья Нарышкина", "Петр I"). parent ("Алексей Михайлович", "Петр I").
+	parent("Алексей Михайлович", "Софья Алексеевна"). parent("Мария Милославская", "Софья Алексеевна").
+	parent("Мария Милославская","Федор Алексеевич"). parent("Алексей Михайлович","Федор Алексеевич"). 
+	parent("Мария Милославская", "Иван V"). parent("Алексей Михайлович", "Иван V").
+	parent("Иван V","Анна Ивановна"). parent("Прасковья Салтыкова", "Анна Ивановна").
+	parent("Иван V","Екатерина Ивановна"). parent("Прасковья Салтыкова", "Екатерина Ивановна").
+	parent("Петр I", "Алексей Петрович"). parent("Евдокия Лопухина", "Алексей Петрович").
+	parent("Петр I", "Анна Петровна"). parent ("Екатерина I", "Анна Петровна").
+	parent("Петр I", "Елизавета Петровна"). parent ("Екатерина I", "Елизавета Петровна").
+	parent("Петр I", "Петр Петрович"). parent ("Екатерина I", "Петр Петрович").
+	man("Михаил Федорович"). 
+	man("Алексей Михайлович").
+	man("Петр I"). 
+	man("Алексей Петрович").
+	man("Федор Алексеевич"). 
+	man("Иван V").
+	man("Петр Петрович").
+	woman("Евдокия Стрешнева"). 
+	woman("Наталья Нарышкина"). 
+	woman("Евдокия Лопухина").  
+	woman("Анна Петровна"). 
+	woman("Елизавета Петровна").  
+	woman("Екатерина I"). 
+	woman ("Екатерина Ивановна").
+	woman ("Мария Милославская"). 
+	woman("Софья Алексеевна").
+	woman ("Прасковья Салтыкова").
+	woman ("Анна Ивановна"). 
+	
+	
+	% Правила:
+	father(X,Y):-parent(X,Y),man(X).
+	mother(X,Y):-parent(X,Y),woman(X).
+	son(X,Y):-parent(X,Y),man(Y).
+	daughter(X,Y):-parent(X,Y), woman(Y).
+	grandparent(X,Y) :- parent(X,Z), parent(Z,Y).
+	brother(X,Y):-parent(Z,X),parent(Z,Y),man(Y), X<>Y.
+	sister(X,Y):-parent(Z,X),parent(Z,Y),woman(Y), X<>Y.
+	aunt(X,Y):-parent(Z,X),sister(Z,Y).
+	uncle(X,Y):-parent(Z,X),brother(Z,Y).
+	niece(X,Y):-aunt(X,Y),woman(X).
+	niece(X,Y):-uncle(X,Y),woman(X).
+
+GOAL
+%1.1
+	%father (X, "Петр I").
+	%parent ("Петр I", Y).
+	%grandparent (T, "Петр I").
+%1.2
+	%father("Алексей Петрович", "Софья Алексеевна").
+	%mother("Мария Милославская",X).
+	%daughter("Екатерина I",Y).
+%1.3
+	%brother("Петр I",X).
+	%uncle("Анна Ивановна",Y).
+	%niece(T,"Софья Алексеевна").
+%5 вопросов
+	%grandparent (X, "Наталья Нарышкина").
+	parent ("Анна Петровна", Y).
+	%brother("Иван V",T).
+	%uncle("Екатерина Ивановна","Федор Алексеевич").
+	%aunt("Анна Ивановна",Y).
